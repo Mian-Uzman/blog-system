@@ -80,11 +80,10 @@ module.exports = {
 		const blogId = req.params.blogId;
 
 		try {
-			console.log(req.user);
 			const commentBlog = await Blog.updateOne(
 				{ _id: blogId },
 				{
-					$push: { comments: { comment, userDetail: userId,userName } },
+					$push: { comments: { comment, userDetail: userId, userName } },
 				}
 			);
 			res.json({ Message: "Comment Added on blog " + blogId });
@@ -100,7 +99,7 @@ module.exports = {
 			const id = req.user.id;
 			const deleteSingleComment = await Blog.updateOne(
 				{
-					authorDetail: id,
+					// authorDetail: id,
 					_id: blogId,
 				},
 				{
