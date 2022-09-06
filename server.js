@@ -4,10 +4,12 @@ const app = express();
 const blogRoutes = require("./routes/blogRoutes");
 const authRoute = require("./routes/authRoute");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 // Middlewares
 const authMiddleware = (req, res, next) => {

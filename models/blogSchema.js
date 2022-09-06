@@ -1,5 +1,25 @@
 const mongoose = require("mongoose");
 
+const Comments = mongoose.Schema({
+	comment: {
+		type: String,
+		required: true,
+	},
+	userName: {
+		type: String,
+		required: true,
+	},
+	userDetail: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "user",
+		required: true,
+	},
+	postedAt: {
+		type: Date,
+		default: Date.now,
+	},
+});
+
 const blogSchema = mongoose.Schema({
 	title: {
 		type: String,
@@ -13,11 +33,15 @@ const blogSchema = mongoose.Schema({
 		max: 1000,
 		required: true,
 	},
+	tags: [String],
+
 	authorDetail: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "user",
 		required: true,
 	},
+	comments: [Comments],
+
 	postedAt: {
 		type: Date,
 		default: Date.now,

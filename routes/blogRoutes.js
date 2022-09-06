@@ -1,45 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
-const Blog = require("../models/blogSchema");
+const blogController = require("../controllers/blogController");
 
-router.post("/create_blog", async (req, res, next) => {
-	const { title, content } = req.body;
-	const id = req.user.id;
-	try {
-		const blog = await Blog.create({ title, content, authorDetail: id });
-		// console.log(blog);
-		res.json({ Message: "Blog Added" });
-	} catch (error) {
-		next({ status: 500, message: error.message });
-	}
-});
+router.post("/create_blog", blogController.addBlog);
 
-router.get("/get_all_blogs", async (req, res, next) => {
-	try {
-		const id = req.user.id;
-		const blogPosts = await Blog.find({ authorDetail: id }).populate(
-			"authorDetail",
-			"-email -password"
-		);
-		res.json({ blogPosts });
-	} catch (error) {
-		next({ status: 500, message: error.message });
-	}
-});
+router.get("/get_user_blogs", blogController.getUserBlogs);
 
-router.get("/get_single_blog/:blogId?", async (req, res, next) => {
-	const blogId = req.params.blogId;
-	try {
-		const id = req.user.id;
-		const blogPosts = await Blog.find({ authorDetail: id, _id: blogId }).populate(
-			"authorDetail",
-			"-email -password"
-		);
-		res.json({ blogPosts });
-	} catch (error) {
-		next({ status: 500, message: error.message });
-	}
-});
+router.get("/get_all_blogs", blogController.getAllBlogs);
+
+router.get("/get_single_blog/:blogId?", blogController.getSingleBlog);
+
+router.put("/update_blog/:blogId?", blogController.updateBlog);
+
+router.delete("/delete_blog/:blogId?", blogController.deleteBlog);
+
+router.post("/add_comment/:blogId?", blogController.addComment);
+
+router.delete("/delete_comment/:blogId?/:commentId?", blogController.deleteComment);
 
 module.exports = router;
